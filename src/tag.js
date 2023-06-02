@@ -17,6 +17,7 @@ export default class Tag {
     this.text = settings.text || '';
     this.params = {};
     this.children = [];
+    this.props = settings.props || {};
 
     if (this.parent) {
       this.parent.children.push(this);
@@ -131,6 +132,10 @@ export default class Tag {
 
   toReact() {
     return React.Children.toArray(this.getComponents());
+  }
+
+  tagSettings() {
+    return (this.props && this.props.tags && this.props.tags[this.name]) || {};
   }
 
 }

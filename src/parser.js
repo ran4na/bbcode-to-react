@@ -1,6 +1,6 @@
 // https://github.com/vishnevskiy/bbcodejs/blob/master/src/coffee/parser.coffee
 import React from 'react';
-import { SPACE_RE, TOKEN_RE, START_NEWLINE_RE } from './constants';
+import { SPACE_RE, TOKEN_RE, START_NEWLINE_RE, DEFAULT_PROPS } from './constants';
 import defaultTags from './tags';
 import Tag from './tag';
 import Renderer from './renderer';
@@ -8,6 +8,7 @@ import Renderer from './renderer';
 export default class Parser {
   constructor(allowedTags = null) {
     this.tags = {};
+    this.props = DEFAULT_PROPS;
 
     if (!allowedTags) {
       this.tags = defaultTags;
@@ -20,6 +21,10 @@ export default class Parser {
     }
 
     this.renderer = new Renderer();
+  }
+
+  setProps(props) {
+    this.props = { ...this.props, ...props };
   }
 
   registerTag(name, tag) {
@@ -127,7 +132,7 @@ export default class Parser {
           const tag = new cls(this.renderer, {
             name: tagName,
             parent: current,
-            params,
+            params, props: this.props
           });
 
           if (!tag.SELF_CLOSE && (tag.CLOSED_BY.indexOf(tagName) < 0 || current.name !== tagName)) {

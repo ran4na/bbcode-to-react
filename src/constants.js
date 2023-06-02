@@ -26,3 +26,14 @@ export const COSMETIC_DICT = {
 };
 
 export const COSMETIC_RE = /--|---|\.\.\.|\(c\)|\(reg\)|\(tm\)/;
+
+export const DEFAULT_FONT_SIZES = {
+  'small': '0.8em',
+  'medium': '1.0em',
+  'large': '1.2em',
+}
+
+export const DEFAULT_PROPS = {
+  fontSizes: DEFAULT_FONT_SIZES,
+  tags: {},//used for future tag specific settings
+}

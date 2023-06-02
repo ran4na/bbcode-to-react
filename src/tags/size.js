@@ -4,24 +4,31 @@ import Tag from '../tag';
 
 export default class SizeTag extends Tag {
 
-  toHTML() {
-    const size = this.params.size;
+  getFontSize() {
+    if (this.props.fontSizes && this.props.fontSizes[this.params.size]) {
+      return this.props.fontSizes[this.params.size];
+    } else if (!isNaN(this.params.size)) {
+      return `${this.params.size}px`;
+    }
+    return 0;
+  }
 
-    if (isNaN(size)) {
+  toHTML() {
+    const size = this.getFontSize();
+    if (size == 0) {
       return this.getContent();
     }
-    return [`<span style="font-size:${size}px">`, this.getContent(), '</span>'];
+    return [`<span style="font-size:${size}">`, this.getContent(), '</span>'];
   }
 
   toReact() {
-    const size = this.params.size;
-
-    if (isNaN(size)) {
+    const size = this.getFontSize();
+    if (size == 0) {
+      console.log("Returning components");
       return this.getComponents();
     }
-
     return (
-      <span style={{ fontSize: `${size}px` }}>{this.getComponents()}</span>
+      <span style={{ fontSize: `${size}` }}>{this.getComponents()}</span>
     );
   }
 }
