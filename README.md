@@ -1,7 +1,24 @@
+# bbcode-to-react - fork
 
-# bbcode-to-react
+This repository is a fork of the __original__ [https://github.com/JimLiu/bbcode-to-react](JimLiu/bbcode-to-react) by Junmin Liu. 
+The fork has been updated to provide compatibility with React 18 and aims for 'some' maintenance.
 
-A utility for turning raw BBCode into React elements.
+bbcode-to-react is a versatile utility that allows you to convert raw BBCode into React elements seamlessly.
+
+## Updates
+
+06-02-2023 - __Font size mapping__ - _Some bb codes contains size=large parameter, which were not supported._
+A props system was created to allow future quick|small customization to specific needs on tags.
+
+```js
+parser.setProps({
+  fontSizes: {
+    "small": "0.8em",
+    "medium": "1em",
+    "large": "1.2em",
+  }
+})
+```
 
 ## Installation
 
