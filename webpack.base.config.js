@@ -1,39 +1,28 @@
 'use strict';
 const path = require('path');
-const webpack = require('webpack');
+const { webpack, DefinePlugin } = require('webpack');
 var env = process.env.WEBPACK_BUILD || 'development';
 
-var CleanWebpackPlugin = require('clean-webpack-plugin');
+var { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const libraryName = 'bbcode-to-react';
 
 module.exports = function (env) {
   let outputFile;
   const plugins = [
-    new CleanWebpackPlugin(['build']),
-    new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
+    new CleanWebpackPlugin(),
+    new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(env)
     }),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin()
   ];
 
   if (env === 'production') {
-    plugins.push(new webpack.optimize.UglifyJsPlugin(
-      {
-        minimize: true,
-        compress: {
-          warnings: false
-        },
-        mangle: true
-      }
-    ));
     outputFile = libraryName.toLowerCase() + '.min.js';
   } else {
     outputFile = libraryName.toLowerCase() + '.js';
   }
 
   const config = {
+    mode: 'production',
     devtool: 'source-map',
     entry: [__dirname + '/src/index.js'],
     output: {
@@ -62,20 +51,15 @@ module.exports = function (env) {
       }
     ],
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.(json)$/,
-          loaders: [
-            'json-loader?cacheDirectory'
-          ]
+          use: 'json-loader'
         },
         {
           test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          loaders: [
-            'babel-loader?cacheDirectory'
-          ]
-        },
+          use: 'babel-loader'
+        }
       ]
     },
     resolve: {
@@ -83,9 +67,6 @@ module.exports = function (env) {
         'bbcode-to-react': 'src/index'
       },
       extensions: ['', '.js', '.json'],
-      root: [
-        path.resolve('./src')
-      ]
     },
     plugins: plugins
   };
